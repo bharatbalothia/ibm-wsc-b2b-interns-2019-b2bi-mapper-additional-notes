@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+  <title>Additional Notes</title>
+
+  <!-- CSS  -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel = "stylesheet"
+         href = "https://fonts.googleapis.com/icon?family=Material+Icons">
+      <link rel = "stylesheet"
+         href = "https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/css/materialize.min.css">
+      <script type = "text/javascript"
+         src = "https://code.jquery.com/jquery-2.1.1.min.js"></script>           
+      <script src = "https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js">
+      </script> 
+</head>
+<body>
+	<style type="text/css">
+		body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+  }
+
+  main {
+    flex: 1 0 auto;
+  }
+	</style>
+  <nav class="light-blue lighten-1" role="navigation">
+    <div class="right" style="margin-right: 15px;">
+            <a class="btn waves-effect waves-light light-blue darken-4 hide-on-med-and-down" href="/logout"><i class="material-icons right">power_settings_new</i>LOGOUT</a>
+          </div>
+    <div class="nav-wrapper container">
+      
+        <div class="row">
+          <div class="col s12 m1"><img class="responsive-img" src="/static/images/logo.png"></div>
+          <div class="col s12 m7 brand-logo" >Additional Notes</div>
+          <div class="col s12 m4 right hide-on-med-and-down" style="font-size: 22px;">Welcome &nbsp;{{ user }}</div>  
+          
+          </div>
+      
+
+    </div>
+
+  </nav>
+  <div>
+  	<div>
+  		<br>
+  		<br>
+  		<br>
+  		<br>
+  		<br>
+  		<br>
+  		
+  	</div>
+  </div>
+  
+
+  
+  <div class="container">
+    <div class = "row">
+         <form class = "col s12" enctype="multipart/form-data" action='' method="POST" >
+            <div class = "row">
+               <label>&nbsp;&nbsp;File Input</label>
+               <div class = "file-field input-field">
+                  <div class = "btn light green">
+                     <span>Browse</span>
+                     <input type = "file" name='file[]' multiple='' required="true"/>
+                  </div>
+                  
+                  <div class = "file-path-wrapper">
+                     <input class = "file-path validate" type = "text"
+                        placeholder = "Upload a file" />
+                  </div>
+               </div>
+            </div>
+            <br>
+    <div class="row">
+            <label >Select Team</label>
+               <select class="browser-default" name="Group" required="true" style="width: 300px;">
+                  <option value="MCR" {% if team=="MCR" %} selected="selected"{% endif %}>MCR</option>
+          <option value="Support" {% if team=="Support" %} selected="selected"{% endif %}>Support</option>
+          <option value="PER"  {% if team=="PER" %} selected="selected"{% endif %}>PER</option>
+          <option value="MAP Development" {% if team=="MAP Development" %} selected="selected"{% endif %}>MAP Development</option>
+               </select>               
+    </div>
+    <br>
+    <div class="row">
+      <button class="btn waves-effect waves-light light-blue" type="submit" name="action">Submit
+    <i class="material-icons right">send</i>
+  </button>
+    </div>  
+         </form>       
+      </div>
+        <h5><strong>{{ info }}</strong></h5>
+    {% if filename %}
+        <span> File is available for download.
+        <form method="post" action="/downloadMAP">
+            <input type="hidden" name="file" value="{{ filename }}">
+            <button class="btn waves-effect waves-light light-green" type="submit">Click Here</button>
+        </form>
+        </span>
+    {% endif %}
+  </div>
+
+  <main></main>
+	  <footer class="page-footer light-blue lighten-5" style="padding-bottom: 12px;">
+	  	&nbsp;&nbsp;&nbsp;&nbsp;<b>© 2018 Copyright by IBM</b> 
+	  </footer>
+
+  <!--  Scripts-->
+  <!-- <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="js/materialize.js"></script>
+  <script src="js/init.js"></script> -->
+
+  </body>
+</html>

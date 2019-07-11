@@ -1,0 +1,108 @@
+Traceback (most recent call last):
+  File "app_new.py", line 1, in <module>
+    from flask import Flask,abort,render_template,request,redirect,url_for,send_file,session
+  File "/usr/local/lib/python3.6/site-packages/flask/__init__.py", line 19, in <module>
+    from jinja2 import Markup, escape
+  File "/usr/local/lib/python3.6/site-packages/jinja2/__init__.py", line 82, in <module>
+    _patch_async()
+  File "/usr/local/lib/python3.6/site-packages/jinja2/__init__.py", line 78, in _patch_async
+    from jinja2.asyncsupport import patch_all
+  File "/usr/local/lib/python3.6/site-packages/jinja2/asyncsupport.py", line 13, in <module>
+    import asyncio
+  File "/usr/local/lib/python3.6/asyncio/__init__.py", line 21, in <module>
+    from .base_events import *
+  File "/usr/local/lib/python3.6/asyncio/base_events.py", line 32, in <module>
+    from . import compat
+  File "<frozen importlib._bootstrap>", line 971, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 955, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 665, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 674, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 764, in get_code
+  File "<frozen importlib._bootstrap_external>", line 833, in get_data
+KeyboardInterrupt
+ * Serving Flask app "app_new" (lazy loading)
+ * Environment: production
+   WARNING: Do not use the development server in a production environment.
+   Use a production WSGI server instead.
+ * Debug mode: on
+ * Running on http://0.0.0.0:8888/ (Press CTRL+C to quit)
+ * Restarting with inotify reloader
+ * Debugger is active!
+ * Debugger PIN: 112-322-285
+9.195.44.119 - - [15/May/2019 11:11:09] "[37mGET / HTTP/1.1[0m" 200 -
+ * Serving Flask app "app_new" (lazy loading)
+ * Environment: production
+   WARNING: Do not use the development server in a production environment.
+   Use a production WSGI server instead.
+ * Debug mode: on
+ * Running on http://0.0.0.0:8888/ (Press CTRL+C to quit)
+ * Restarting with inotify reloader
+ * Debugger is active!
+ * Debugger PIN: 112-322-285
+9.195.44.119 - - [15/May/2019 11:22:00] "[37mGET / HTTP/1.1[0m" 200 -
+9.195.44.119 - - [15/May/2019 11:22:37] "[32mPOST /authentication HTTP/1.1[0m" 302 -
+9.195.44.119 - - [15/May/2019 11:22:37] "[37mGET / HTTP/1.1[0m" 200 -
+9.195.44.119 - - [15/May/2019 11:23:11] "[32mPOST /authentication HTTP/1.1[0m" 302 -
+9.195.44.119 - - [15/May/2019 11:23:11] "[37mGET / HTTP/1.1[0m" 200 -
+9.195.44.119 - - [15/May/2019 11:23:57] "[37mGET / HTTP/1.1[0m" 200 -
+9.195.44.119 - - [15/May/2019 11:24:33] "[1m[35mPOST /authentication HTTP/1.1[0m" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.6/site-packages/flask/app.py", line 2309, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.6/site-packages/flask/app.py", line 2295, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.6/site-packages/flask/app.py", line 1741, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python3.6/site-packages/flask/_compat.py", line 35, in reraise
+    raise value
+  File "/usr/local/lib/python3.6/site-packages/flask/app.py", line 2292, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.6/site-packages/flask/app.py", line 1815, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.6/site-packages/flask/app.py", line 1718, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python3.6/site-packages/flask/_compat.py", line 35, in reraise
+    raise value
+  File "/usr/local/lib/python3.6/site-packages/flask/app.py", line 1813, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.6/site-packages/flask/app.py", line 1799, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/root/AdditionalNotes/app_new.py", line 74, in ldapAuth
+    isPassword = c2.bind()
+  File "/usr/local/lib/python3.6/site-packages/ldap3/core/connection.py", line 603, in bind
+    self.refresh_server_info()
+  File "/usr/local/lib/python3.6/site-packages/ldap3/core/connection.py", line 1330, in refresh_server_info
+    self.server.get_info_from_server(self)
+  File "/usr/local/lib/python3.6/site-packages/ldap3/core/server.py", line 450, in get_info_from_server
+    self._get_schema_info(connection)
+  File "/usr/local/lib/python3.6/site-packages/ldap3/core/server.py", line 420, in _get_schema_info
+    get_operational_attributes=True
+  File "/usr/local/lib/python3.6/site-packages/ldap3/core/connection.py", line 779, in search
+    response = self.post_send_search(self.send('searchRequest', request, controls))
+  File "/usr/local/lib/python3.6/site-packages/ldap3/strategy/sync.py", line 142, in post_send_search
+    responses, result = self.get_response(message_id)
+  File "/usr/local/lib/python3.6/site-packages/ldap3/strategy/base.py", line 345, in get_response
+    raise LDAPSessionTerminatedByServerError(self.connection.last_error)
+ldap3.core.exceptions.LDAPSessionTerminatedByServerError: session terminated by server
+9.195.44.119 - - [15/May/2019 11:24:34] "[37mGET /authentication?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 200 -
+9.195.44.119 - - [15/May/2019 11:24:34] "[37mGET /authentication?__debugger__=yes&cmd=resource&f=jquery.js HTTP/1.1[0m" 200 -
+9.195.44.119 - - [15/May/2019 11:24:34] "[37mGET /authentication?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 200 -
+9.195.44.119 - - [15/May/2019 11:24:34] "[37mGET /authentication?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 200 -
+9.195.44.119 - - [15/May/2019 11:24:35] "[37mGET /authentication?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 200 -
+9.195.44.119 - - [15/May/2019 11:24:35] "[37mGET /authentication?__debugger__=yes&cmd=resource&f=ubuntu.ttf HTTP/1.1[0m" 200 -
+ * Serving Flask app "app_new" (lazy loading)
+ * Environment: production
+   WARNING: Do not use the development server in a production environment.
+   Use a production WSGI server instead.
+ * Debug mode: on
+ * Running on http://0.0.0.0:8888/ (Press CTRL+C to quit)
+ * Restarting with inotify reloader
+ * Debugger is active!
+ * Debugger PIN: 112-322-285
+9.195.44.119 - - [15/May/2019 11:49:02] "[32mPOST /authentication HTTP/1.1[0m" 302 -
+9.195.44.119 - - [15/May/2019 11:49:02] "[37mGET / HTTP/1.1[0m" 200 -
+9.195.44.119 - - [15/May/2019 11:51:13] "[32mPOST /authentication HTTP/1.1[0m" 302 -
+9.195.44.119 - - [15/May/2019 11:51:14] "[37mGET /upload/ HTTP/1.1[0m" 200 -
+9.195.44.119 - - [15/May/2019 11:51:16] "[37mGET /static/images/logo.png HTTP/1.1[0m" 200 -
+9.195.44.119 - - [15/May/2019 11:51:19] "[32mGET /logout HTTP/1.1[0m" 302 -
+9.195.44.119 - - [15/May/2019 11:51:19] "[37mGET / HTTP/1.1[0m" 200 -

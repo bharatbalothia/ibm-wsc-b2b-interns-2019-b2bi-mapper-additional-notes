@@ -1,0 +1,26 @@
+<html>
+	<head>
+		<title>Additional Notes</title>
+	</head>
+	<body>
+	        <div class="container">
+	                <div class="header">
+	                    <h1 style="text-align: center;" class=" ta">Additional Notes Service</h1>
+	                </div>
+	         <div class="container" align="center">
+	                    <h3 style="text-align: center;">Welcome {{user}}!!</h3>
+	          </div>
+	<div align="right" style="margin-right: 100px">
+		<a href="/logout">Logout</a>
+	</div>
+	<br>
+	<div align="center">
+		<form action='' method="POST" enctype="multipart/form-data">
+		    <p><input type='file' name='file[]' multiple=''>
+		    <input type='submit' value='Generate Notes'>
+		    </p>
+		</form>
+	</div>
+	</div>
+	</body>
+</html>

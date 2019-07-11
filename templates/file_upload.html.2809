@@ -1,0 +1,36 @@
+</html>
+<html>
+	<head>
+		<title>Additional Notes</title>
+	</head>
+	<body>
+	        <div class="container">
+	                <div class="header">
+	                    <h1 style="text-align: center;" class=" ta">Additional Notes Service</h1>
+	                </div>
+	         <div class="container" align="center">
+	                    <h3 style="text-align: center;">Welcome {{user}}!!</h3>
+	          </div>
+	<div align="right" style="margin-right: 100px">
+		<a href="/logout">Logout</a>
+	</div>
+	<br>
+	<div align="center">
+		<form action='' method="POST" enctype="multipart/form-data">
+		    <p><input type='file' name='file[]' multiple='' required="true">
+		    	TEAM &nbsp;
+		    <select name="Group" required="true" id='sel'>
+		    	<option value="None" {% if team=="None" %} selected="selected"{% endif %}>None</option>
+  				<option value="MCR" {% if team=="MCR" %} selected="selected"{% endif %}>MCR</option>
+  				<option value="Support" {% if team=="Support" %} selected="selected"{% endif %}>Support</option>
+  				<option value="PER"  {% if team=="PER" %} selected="selected"{% endif %}>PER</option>
+  				<option value="MAP DEVELOPMENT" {% if team=="MAP DEVELOPMENT" %} selected="selected"{% endif %}>MAP DEVELOPMENT</option>
+			</select>
+			&nbsp;&nbsp;&nbsp;&nbsp;
+		    <input type='submit' value='Generate Notes'>
+		    </p>
+		</form>
+	</div>
+	</div>
+	</body>
+</html>

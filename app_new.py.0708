@@ -1,0 +1,194 @@
+from flask import Flask,abort,render_template,request,redirect,url_for,send_file,session
+from werkzeug import secure_filename
+import os
+import shutil
+import final_additionalnotes
+from flask_wtf import Form
+from flask_session import Session
+from ldap3 import *
+import couchdb
+import time
+from datetime import timedelta
+from os.path import basename 
+from zipfile import ZipFile
+
+app = Flask(__name__)
+UPLOAD_FOLDER = './tmp'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+@app.before_request
+def make_session_permanent():
+    session.permanent=True
+    app.permanent_session_lifetime=timedelta(minutes=60)
+
+def authorizeCouch():
+    couchserver = couchdb.Server("http://localhost:5984/")
+    user = "admin"
+    password = "admin123"
+    return couchdb.Server("http://%s:%s@localhost:5984/" % (user, password))
+
+def dbCreate(dbname,couchserver):
+    if dbname in couchserver:
+        db = couchserver[dbname]
+    else:
+        db = couchserver.create(dbname)
+    return db
+
+
+@app.route('/')
+def index():
+    if 'logged_in' in session and 'username' in session and session['logged_in']==True:
+        return redirect(url_for('upload_file'))
+
+    if('authorized' in session):
+        temp = session['authorized']
+        session.pop('authorized',None)
+        return render_template('login.html',authorized=temp)
+    else:
+        return render_template('login.html',authorized=1)
+
+@app.route('/authentication',methods=['POST'])
+def ldapAuth():
+    POST_USERNAME = str(request.form['username'])
+    POST_PASSWORD = str(request.form['password'])
+
+    server = Server('ldap://bluepages.ibm.com', get_info=ALL)
+    c = Connection(server, user="", password="", raise_exceptions=False)
+    noUseBool = c.bind()
+
+    checkUserIBM = c.search(search_base = 'ou=bluepages,o=ibm.com',
+         search_filter = '(mail=%s)'%(POST_USERNAME),
+         search_scope = SUBTREE,
+         attributes = ['dn','givenName'])
+
+    if(checkUserIBM==False):
+        session['authorized'] = 0
+        return redirect(url_for('index'))
+
+
+    #get the username of the emailID and authenticate password
+    userName = c.entries[0].givenName[0]
+    uniqueID = c.response[0]['dn']
+    c2 = Connection(server,uniqueID,POST_PASSWORD)
+    isPassword = c2.bind()
+
+    if(isPassword == False):
+        session['authorized'] = 0
+        return redirect(url_for('index'))
+
+    #now search group
+    checkIfAdminGroup = c.search(search_base = 'cn=RSC_B2B,ou=memberlist,ou=ibmgroups,o=ibm.com',
+     search_filter = '(uniquemember=%s)'%(str(uniqueID)),
+     search_scope = SUBTREE,
+     attributes = ['dn'])
+
+    if(checkIfAdminGroup==False):
+        session['authorized'] = 0
+        return(redirect(url_for('index')))
+
+    #control reaches here if user password and group authentication is successful
+    session['username'] = str(userName)
+    session['email']    = str(POST_USERNAME)
+    session['logged_in']= True
+    return redirect(url_for('upload_file'))
+
+
+
+@app.route('/downloadMAP',methods=['POST'])
+def downloadMAP(file):
+    return send_file(file,as_attachment=True)
+
+@app.route('/upload/',methods = ['GET','POST'])
+def upload_file():
+    if request.method =='POST':
+        file = request.files['file[]']
+        if file:
+            #initialize the base path and user path
+            basePath = './Data/'
+            userPath = basePath + session['username']
+
+            #initializing the output and temp Paths
+            outputPath   = userPath + '/output/'
+            tempFilePath = userPath + '/tempFiles/'
+
+            #first check if there is a directory associated with user and if not add it and all the inside folders ie output and tempFiles
+            if not os.path.exists(userPath):
+                os.makedirs(userPath)
+                os.makedirs(outputPath)
+                os.makedirs(tempFilePath)
+
+            #now clean the tempFiles Path, first get all the files and then remove one by one using os.remove()
+            fileList = os.listdir(tempFilePath)
+            for files in fileList:
+                os.remove(tempFilePath+files)
+            fileList = os.listdir(outputPath)
+            for files in fileList:
+                os.remove(outputPath+files)            
+            #get the name of the file Uploaded
+            filenameUploaded = secure_filename(file.filename)
+            timeaccessed     = time.strftime("%Y/%m/%d %H:%M:%S")
+            select=request.form.get('Group')
+            #now store data in couchDB
+
+            #create couchdb Database
+            couchserver = authorizeCouch()
+            db = dbCreate("additionalnotes",couchserver)
+
+            #search if user exists, if not create new doc
+            idForUser = ""
+            dictSaved = {}
+            for document in db:
+                if(db[document]['email']==session['email']):
+                    idForUser = db[document]['_id']
+                    dictSaved = db[document]
+                    break
+
+            #if there is no user
+            if(idForUser==""):
+                dictSaved['email'] = session['email']
+                dictSaved['username'] = session['username']
+                dictSaved['usage'] = [{'fileName':filenameUploaded,'time':timeaccessed,'team':select}]
+            #else append usage list
+            else:
+                dictSaved['usage'].append({'fileName':filenameUploaded,'time':timeaccessed,'team':select})
+
+            #save to db
+            db.save(dictSaved)
+
+            #save the file in the tempfolder
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'],filenameUploaded))
+
+            filePathUploaded = os.path.join(UPLOAD_FOLDER,filenameUploaded)
+
+            #make a copy of the file uploaded to tempFolder
+            shutil.copy(filePathUploaded,tempFilePath)
+
+            #make the notes for the file
+            notesMadeFile,new_logfile = final_additionalnotes.an(filePathUploaded,outputPath,tempFilePath,filenameUploaded)
+            ipfile=outputPath +filenameUploaded.split('.')[0]+'.zip'
+            #with ZipFile(outputPath+'/myfile.zip','w') as zip:
+             # writing each file one by one
+            with ZipFile(ipfile,'w') as zip:
+                 zip.write(notesMadeFile,basename(notesMadeFile))
+                 zip.write(new_logfile,basename(new_logfile))
+             #download the result file
+            return downloadMAP(ipfile)
+            #return downloadMAP(notesMadeFile)
+
+    # if('logged_in' not in session or 'username' not in session):
+    #     return redirect(url_for('index'))
+    return render_template('file_upload.html',user=session['username'])
+
+
+@app.route('/logout',methods=['GET'])
+def logout():
+    for key in list(session):
+        session.pop(key,None)
+    return redirect(url_for('index'))
+
+if __name__ == '__main__':
+    app.secret_key = 'sadasdha90sdasd98as90da8sd231kjw@!@!@!#$@#SADASFD'
+    app.config['SESSION_TYPE'] = 'filesystem'
+    sess = Session()
+    sess.init_app(app)
+    app.run(host='0.0.0.0',port=8888,debug=True)

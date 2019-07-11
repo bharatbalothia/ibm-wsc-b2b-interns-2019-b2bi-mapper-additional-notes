@@ -1,0 +1,391 @@
+// Created on 05-08-2019 by Kusum Kumar
+object ob;
+string[16] docnum,tmpDocnum;
+string[60] sContactName;
+string[80] sContactTele;
+string[60] sContactFax;
+string[60] sContactEmail;
+string[15] sISA0I07;
+datetime dtm_ReqDelivery;
+datetime dtm_ReqPickup;
+string[15] sSF;
+
+String[256] sENV_FLAG, temp_isa06; 
+
+ob = new("java.util.Date");
+tmpDocnum = ob.getTime();
+
+docnum = "000";
+concat(docnum, tmpDocnum, 13);
+
+
+ob = new("java.util.Date");
+tmpDocnum = ob.getTime();
+
+docnum = "000";
+concat(docnum, tmpDocnum, 13);
+sENV_FLAG = ""; 
+temp_isa06 = "";
+
+update processdata set xpathresult =   "DFA_SAP"  where xpath="TranslationOutput/ProcessingFlag1";
+//*** Here is the logic to find test vs prod environment...If we have ProcessingFlag2 available in process data, then its TEST system. If PF2 value is null, then default it to production system. This way, all map unit tests will show Production values and it should match expected outputs . Put the below logic in Pre-session.
+                                                                                                                                                                  
+                                                                                                                                                                                                           
+    select xpathresult into sENV_FLAG from processdata where Xpath="BPN/ProcessingFlag2";                                                                                                                
+                                                                                                                                                                                                           
+    if sENV_FLAG = "" then
+    sENV_FLAG = "ECP";
+INTEGER iTextCnt, iItemCnt, iBlock, iGrpTextCnt, iAddFlag, iRefCnt, iRefLoopCnt, iSacCntH, iSacCntDinH, iSacCntD, CNT_HSAC, CNT_DSAC;
+integer iREFCnt, iTDCnt;
+string[10000] sTextLine;
+string[10000] sHoldText;
+string[4] temp_TDID[99];
+string[4] arr_SAC02[99];
+string[2] arr_SAC01[99];
+string[2] arr_SAC09[99];
+real arr_SAC08[99];
+
+string[70] temp_TDLINE[99];
+
+iSacCntH = 0;
+iSacCntDinH = 0;
+iRefLoopCnt = 0;
+iGrpTextCnt = 0;
+iBlock = 0;
+iTextCnt = 0;
+iItemCnt = 0;
+iAddFlag = 0;
+sTextLine = "";
+sHoldText = "";
+temp_isa06 = trim(#0I06);
+sISA0I07 = trim(#0I07);
+string[256] temp_isa12;
+object sysDate;
+object sysDateFormat1;
+string[256] strHOLD;
+string[17] sysDateTimeString;
+
+
+temp_isa12= "";
+strHOLD = "";
+//ntoa(#0I12,temp_isa12);
+
+
+temp_isa12 = #0I12;
+
+
+sysDate = new("java.util.Date");
+sysDateFormat1 = new("java.text.SimpleDateFormat","yyMMddHHmmssSSS");
+sysDateTimeString = sysDateFormat1.format(sysDate);
+
+strHOLD = temp_isa12 + "_" + sysDateTimeString;
+
+update processdata set xpathresult = #0I12  where xpath="TranslationOutput/ProcessingFlag3";
+$GROUP_ORG[1].#temp_QUALF:4 = "008";
+$GROUP_ORG[1].#temp_ORGID:4 = "1008";
+
+$GROUP_ORG[2].#temp_QUALF:4 = "007";
+$GROUP_ORG[2].#temp_ORGID:4 = "10";
+
+//Use code list lookup into SAP Division XREF
+
+$GROUP_ORG[3].#temp_ORGID:4 = "";
+
+SELECT SENDERCODE
+INTO $GROUP_ORG[3].#temp_ORGID:4
+FROM CODELIST
+WHERE NAME = "DFA_DIVISION_XREF"
+AND RECEIVERCODE = sISA0I07;
+
+if $GROUP_ORG[3].#temp_ORGID:4 > "" then
+ $GROUP_ORG[3].#temp_QUALF:4 = "006";
+
+$GROUP_ORG[4].#temp_QUALF:4 = "012";
+$GROUP_ORG[4].#temp_ORGID:4 = "ZOR";
+if #0366 = "RQ" then
+  sContactName = #0093;
+
+if #0365 = "TE" then
+  sContactTele = #0364;
+
+if #0365:2 = "FX" then
+  sContactFax= #0364:2;
+
+if #0365:3 = "EM" then
+  sContactEmail = #0364:3;
+//Hold Date values for later
+
+IF #0374:13 = "002"  THEN
+   $850.#TEMP_DTM02_002_118 = #0373:15;
+
+IF #0374:13 = "010" | #0374:13 = "118" THEN
+   $850.#TEMP_DTM02_002_118 = #0373:15;
+
+if #0374:13 = "118" then
+ begin
+  $850.#temp_E2EDK35_Q:2 = "003";
+  $850.#temp_E2EDK35_C:2= "CPU";
+  $850.#temp_TD504:2 = "11";
+  $850.#temp_TD5Description:2 = "Customer Pick-Up";
+ end
+ else begin
+  $850.#temp_E2EDK35_Q:2 = "003";
+  $850.#temp_E2EDK35_C:2 = "PPA";
+  $850.#temp_TD504:2 = "12";
+  $850.#temp_TD5Description:2 = "Motor Common Carrier";
+ end
+// PO Number is mapped from BEG so nothing
+// going on here....
+// *
+//if #0127:71 > "" then
+// begin
+//  sTextLine = sTextLine + #0127:71 + " ";
+//  sHoldText = sTextLine;
+// end
+sTextLine = sTextLine + #0933 + " ";
+sHoldText = sTextLine;
+if $850.#SNDPRN = "" THEN
+  $850.#SNDPRN = "UNKNOWN";
+IF #0098:6 = "ST" THEN
+ BEGIN
+  $850.#TEMP_N101_ST = #0093:2;
+  $850.#TEMP_N104_ST = #0067:3;
+  $850.#TEMP_N301_ST = #0166;
+  $850.#TEMP_N401_ST = #0019:5;
+  $850.#TEMP_N402_ST = #0156:5;
+  $850.#TEMP_N403_ST = #0116:5;
+  $850.#TEMP_N404_ST = #0026:10;
+  $850.#TEMP_N104_ST:2 = trim($850.#0I06);
+
+END
+
+IF $850.#TEMP_N404_ST = "" THEN
+  $850.#TEMP_N404_ST = "USA";
+
+
+
+
+
+//IF #0098:6 = "BT" THEN
+// BEGIN
+//  $850.#SNDPRN = #0067:3;
+// END
+
+//if #0098:6 = "ST" then
+// begin
+//  iGrpTextCnt = iGrpTextCnt + 1;
+//  temp_TDID[iGrpTextCnt] = "ZEIA";
+//  temp_TDLINE[iGrpTextCnt] = #0067:3;
+// end
+if sContactName > "" then
+   begin
+    iGrpTextCnt = iGrpTextCnt + 1;
+    iTextCnt = iTextCnt + 1;
+    $GROUP_E2EDKT1002[iGrpTextCnt].#TEMP_TDID = "ZEYD";
+    $TEMP_E2EDKT2001[iGrpTextCnt][iTextCnt].#TEMP_TDLINE = "Contact Name: " + sContactName;
+    iTextCnt = 0;
+    sContactName = "";
+   end
+
+  if sContactTele > "" then
+   begin
+    iGrpTextCnt = iGrpTextCnt + 1;
+    iTextCnt = iTextCnt + 1;
+    $GROUP_E2EDKT1002[iGrpTextCnt].#TEMP_TDID = "ZEYD";
+    $TEMP_E2EDKT2001[iGrpTextCnt][iTextCnt].#TEMP_TDLINE = "Contact Phone: " + sContactTele;
+    iTextCnt = 0;
+    sContactTele = "";
+   end
+
+  if sContactFax > "" then
+   begin
+    iGrpTextCnt = iGrpTextCnt + 1;
+    iTextCnt = iTextCnt + 1;
+    $GROUP_E2EDKT1002[iGrpTextCnt].#TEMP_TDID = "ZEYD";
+    $TEMP_E2EDKT2001[iGrpTextCnt][iTextCnt].#TEMP_TDLINE = "Contact Fax: " + sContactFax;
+    iTextCnt = 0;
+    sContactFax = "";
+   end
+
+  if sContactEmail > "" then
+   begin
+    iGrpTextCnt = iGrpTextCnt + 1;
+    iTextCnt = iTextCnt + 1;
+    $GROUP_E2EDKT1002[iGrpTextCnt].#TEMP_TDID = "ZEYD";
+    $TEMP_E2EDKT2001[iGrpTextCnt][iTextCnt].#TEMP_TDLINE = "Contact Email: " + sContactEmail;
+    iTextCnt = 0;
+    sContactEmail = "";
+   end
+
+//*** Customer's Vendor Number
+if #0098:6 = "SF" THEN
+ sSF = #0067:3;
+
+iTextCnt = 0;
+if iRefCnt > 0 then
+ begin
+  iRefLoopCnt = 0;
+  while iRefLoopCnt < iRefCnt do
+   begin
+    iRefLoopCnt = iRefLoopCnt + 1;
+    $GROUP_E2EDKT1002[iRefLoopCnt].#TEMP_TDID = temp_TDID[iRefLoopCnt];
+    $TEMP_E2EDKT2001[iRefLoopCnt][1].#TEMP_TDLINE =temp_TDLINE[iRefLoopCnt];
+   end
+ end
+
+
+if sTextLine > "" then 
+ begin
+  iGrpTextCnt = iGrpTextCnt + 1;
+  $GROUP_E2EDKT1002[iGrpTextCnt].#TEMP_TDID = "002";
+  while len(sTextLine) > 0 do
+   begin
+    iTextCnt = iTextCnt + 1;
+    if len(sTextLine) > 70 then
+      iBlock = 70; 
+     else
+      iBlock = len(sTextLine);
+    $TEMP_E2EDKT2001[iGrpTextCnt][iTextCnt].#TEMP_TDLINE = left(sTextLine, iBlock);
+    sTextLine = mid(sTextLine, iBlock, len(sTextLine));
+   end
+ end
+if #0093:3 > "" then
+ $850.#TEMP_N101_ST:3 = #0093:3;
+//***************************************************
+//***** Increment Line Counter                      *
+//***************************************************
+
+iItemCnt = iItemCnt + 1;
+//***************************************************
+//***** Reset Counters                              *
+//***************************************************
+
+iSacCntD = 0;
+CNT_HSAC = 0;
+CNT_DSAC = 0;
+
+
+//***************************************************
+//***** If non-SAC05 header records were found loop *
+//***** through array created at header SAC and     *
+//***** create item level SAC records               *
+//***************************************************
+                                                                                                                                                                                    
+while CNT_HSAC < iSacCntDinH do                                                                                                                                                                       
+  begin                                                                                                                                                                                              
+    CNT_HSAC = CNT_HSAC + 1;
+    CNT_DSAC = CNT_DSAC + 1;
+    if arr_SAC01[CNT_HSAC] = "C" then
+      $work_SAC:2[iItemCnt][CNT_DSAC].#work_0248_SAC01:2 = "+";
+        else
+      $work_SAC:2[iItemCnt][CNT_DSAC].#work_0248_SAC01:2 = "-";
+    SELECT TEXT2
+    INTO $work_SAC:2[iItemCnt][CNT_DSAC].#work_1300_SAC02:2
+    FROM CODELIST
+    WHERE NAME = "DFA_EDI_SAC_XREF"
+    AND SENDERCODE = arr_SAC02[CNT_HSAC];
+    if  $work_SAC:2[iItemCnt][CNT_DSAC].#work_1300_SAC02:2 = ""
+      then
+        $work_SAC:2[iItemCnt][CNT_DSAC].#work_1300_SAC02:2 = "EDI3";
+ntoa(arr_SAC08[CNT_HSAC],$work_SAC:2[iItemCnt][CNT_DSAC].#work_0118:2_SAC08);
+
+    if #0639:2 = "" then 
+      $work_SAC:2[iItemCnt][CNT_DSAC].#work_MEANU = #0355:28;
+    if #0639:2 = "PP" then 
+      $work_SAC:2[iItemCnt][CNT_DSAC].#work_MEANU = "LBR";
+    if #0639:2 = "PE" then
+      if #0355:28 = "TE" then
+        $work_SAC:2[iItemCnt][CNT_DSAC].#work_MEANU = "TOT";
+          else
+        $work_SAC:2[iItemCnt][CNT_DSAC].#work_MEANU = "CS";
+    if #0639:2 = "" then 
+      $work_SAC:2[iItemCnt][CNT_DSAC].#work_MEANU = #0355:28;
+
+    if trim($work_SAC:2[iItemCnt][CNT_DSAC].#work_MEANU) = "CA" then 
+       $work_SAC:2[iItemCnt][CNT_DSAC].#work_MEANU = "CS";
+    if trim($work_SAC:2[iItemCnt][CNT_DSAC].#work_MEANU) = "LB" then 
+       $work_SAC:2[iItemCnt][CNT_DSAC].#work_MEANU = "LBR";
+  end
+
+
+//***************************************************
+//***** Assign UPRBS and Override MEANU if CW sent  * 
+//***** in on SAC segment from header               * 
+//***************************************************
+
+    if trim(arr_SAC09[CNT_HSAC]) = "CW" then
+      begin
+        $work_SAC:2[iItemCnt][CNT_DSAC].#work_MEANU = "LBR";
+        $work_SAC:2[iItemCnt][CNT_DSAC].#work_UPRBS = "100";
+      end
+
+    if trim(arr_SAC09[CNT_HSAC]) = "LB" then
+      begin
+        $work_SAC:2[iItemCnt][CNT_DSAC].#work_MEANU = "LBR";
+        $work_SAC:2[iItemCnt][CNT_DSAC].#work_UPRBS = "1";
+      end
+
+//***************************************************
+//***** Assign QTY ordered and UOM values           *
+//***** If Value in PO101 assign to POSEX in IDOC   *
+//***************************************************
+
+$grp_PO1[iItemCnt].#TEMP_PO102 = #0330;
+$grp_PO1[iItemCnt].#TEMP_PO103 = #0355:28;  
+  if trim(#0355:28) = "LB" then 
+    $grp_PO1[iItemCnt].#TEMP_PO103 = "LBR";  
+if #0350:3 > "" then
+    $grp_PO1[iItemCnt].#TEMP_PO101 = #0350:3;
+
+//***************************************************
+//***** Check Qualifier and get UK value            *
+//***************************************************
+if #0235:16 = "PI" THEN
+  $grp_PO1.#TEMP_PO109 = #0234:36;  
+if #0235:17 = "PI" THEN
+  $grp_PO1.#TEMP_PO109 = #0234:37;  
+if #0235:18 = "PI" THEN
+  $grp_PO1.#TEMP_PO109 = #0234:38;
+CNT_DSAC = CNT_DSAC + 1;
+$work_SAC:2[iItemCnt][CNT_DSAC].#work_0248_SAC01:2 = "+";
+$work_SAC:2[iItemCnt][CNT_DSAC].#work_1300_SAC02:2 = "EDI1";
+ntoa (#0782:7 / #0380:11, $work_SAC:2[iItemCnt][CNT_DSAC].#work_0118:2_SAC08);
+$work_SAC:2[iItemCnt][CNT_DSAC].#work_UPRBS = "1";
+if #0355:30 = "LB" then 
+  $work_SAC:2[iItemCnt][CNT_DSAC].#work_MEANU = "LBR";
+if #0355:30 = "CA" then
+  $work_SAC:2[iItemCnt][CNT_DSAC].#work_MEANU = "CS";
+$grp_PO1.#TEMP_PID15 = #0352:23;
+if #0128:30 = "K4" then 
+ begin
+  iREFCnt = iREFCnt + 1;
+  $temp_REF[iREFCnt][iItemCnt].#temp_TDID = "0002";
+  iTDCnt = iTDCnt + 1;
+  $temp_TXTP[iItemCnt][iREFCnt][iTDCnt].#temp_TDLINE = "Criticality Designator: " + #0127:32;
+ end
+
+
+if #0128:30 = "BO" then 
+ begin
+  iREFCnt = iREFCnt + 1;
+  $temp_REF[iREFCnt][iItemCnt].#temp_TDID = "0002";
+  iTDCnt = iTDCnt + 1;
+  $temp_TXTP[iItemCnt][iREFCnt][iTDCnt].#temp_TDLINE = "Bin Number: " + #0127:32;
+ end
+//Hold Date values for later
+
+IF #0374:37 = "002"  THEN
+ begin
+  $850.#TEMP_DTM02_002_118 = #0373:45;
+  $850.#temp_TD504:2 = "10";
+  $850.#temp_TD5Description:2 = "Less than Truckload";
+ end
+
+IF #0374:37 = "010" | #0374:37 = "118" THEN
+ begin
+  $850.#temp_TD504:2 = "11";
+  $850.#temp_TD5Description:2 = "Customer Pick-Up";
+  $850.#temp_E2EDK35_Q:2 = "003";
+  $850.#temp_E2EDK35_C:2 = "CPU";
+  $850.#TEMP_DTM02_002_118 = #0373:45;
+ end

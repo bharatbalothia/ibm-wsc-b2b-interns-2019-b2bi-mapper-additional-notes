@@ -1,0 +1,1409 @@
+FIELD: STATUS
+Hardcode "30"
+
+FIELD: DIRECT
+Hardcode "1"
+
+FIELD: OUTMOD
+Hardcode "2"
+
+FIELD: IDOCTYP
+Hardcode "ORDERS05"
+
+FIELD: MESTYP
+Hardcode "ORDERS"
+
+FIELD: STDMES
+Hardcode "PO"
+
+FIELD: SNDPRT
+Hardcode "KU"
+
+FIELD: SNDPFC
+Hardcode "AG"
+
+FIELD: RCVPRT
+Hardcode "LS"
+
+FIELD: CURCY
+Hardcode "USD"
+
+FIELD: IDDAT:4
+If DATUM:7 exists then Hardcode "002"
+
+FIELD: KOEIN
+Hardcode "USX"
+
+FIELD: PARVW:4
+If LIFNR:4 exists then Hardcode "WE"
+
+FIELD: PARVW:7
+If LIFNR:7 exists then Hardcode "AG"
+
+FIELD: PARVW:6
+Hardcode "LF"
+
+FIELD: QUALF:2
+If BELNR:2 exists then Hardcode "001"
+
+FIELD: KOEIN:2
+Hardcode "USX"
+
+FIELD: QUALF:6
+Hardcode "001"
+
+field nameMANDT
+************
+"" = "ECP" and Select TEXT1 into # MANDT from codelist where sendercode = if sendercode = "" then Populate "DFA_INBOUND_EDIDC_XREF"
+field nameDOCNUM
+************
+then concatenate 13 chars of tmpDocnum to docnumMap 000
+field nameDOCREL
+field nameSTATUS
+************
+Hardcode "30"
+
+field nameDIRECT
+************
+Hardcode "1"
+
+field nameOUTMOD
+************
+Hardcode "2"
+
+field nameEXPRSS
+field nameTEST
+field nameIDOCTYP
+************
+Hardcode "ORDERS05"
+
+field nameCIMTYP
+field nameMESTYP
+************
+Hardcode "ORDERS"
+
+field nameMESCOD
+************
+remove leading and trailing characters from ISA08 = remove leading and trailing characters from ISA08 and Select SENDERCODE into # MESCOD from Codelist if Name = "DFA_DIVISION_XREF" then Map remove leading and trailing characters from ISA08
+field nameMESFCT
+field nameSTD
+field nameSTDVRS
+field nameSTDMES
+************
+Hardcode "PO"
+
+field nameSNDPOR
+************
+"" = "ECP" and Select TEXT2 into # SNDPOR from codelist where sendercode = if sendercode = "" then Populate "DFA_INBOUND_EDIDC_XREF"
+field nameSNDPRT
+************
+Hardcode "KU"
+
+field nameSNDPFC
+************
+Hardcode "AG"
+
+field nameSNDPRN
+************
+If $$$01 = "" then Populate "UNKNOWN" If $$$01 = "" then Populate "UNKNOWN" trailing characters from ISA06 and Select sendercode into # SNDPRN from codelist if receivercode = remove leading then Populate "DFA_SAP_PARTNER_XREF"
+field nameSNDSAD
+field nameSNDLAD
+field nameRCVPOR
+************
+"" = "ECP" and Select TEXT3 into # RCVPOR from codelist where sendercode = if sendercode = "" then Populate "DFA_INBOUND_EDIDC_XREF"
+field nameRCVPRT
+************
+Hardcode "LS"
+
+field nameRCVPFC
+field nameRCVPRN
+************
+"" = "ECP" and Select TEXT4 into # RCVPRN from codelist where sendercode = if sendercode = "" then Populate "DFA_INBOUND_EDIDC_XREF"
+field nameRCVSAD
+field nameRCVLAD
+field nameCREDAT
+************
+Map current DateTime in format YYYYMMDD
+field nameCRETIM
+************
+Map current DateTime in format HHMMSS
+field nameREFINT
+************
+Map ISA13
+
+field nameREFGRP
+************
+Map GS06
+
+field nameREFMES
+************
+Map ST02
+
+field nameARCKEY
+field nameSERIAL
+field nameTAG_EXT
+field nameMANDT:2
+field nameDOCNUM:2
+************
+then concatenate 13 chars of tmpDocnum to docnumMap 000
+field nameSEGNUM
+************
+COUNTER = COUNTER + 1 then Hardcode COUNTER
+field namePSGNUM
+field nameHLEVEL
+field nameACTION
+field nameKZABS
+field nameCURCY
+************
+Hardcode "USD"
+
+field nameHWAER
+field nameWKURS
+field nameZTERM
+field nameKUNDEUINR
+field nameEIGENUINR
+field nameBSART
+field nameBELNR
+field nameNTGEW
+field nameBRGEW
+field nameGEWEI
+field nameFKART_RL
+field nameABLAD
+field nameBSTZD
+field nameVSART
+************
+If DTM01 = "118" then Populate "11"
+If DTM01 ! = "118" then Populate "12"
+If 8300_SCH/SCH05 = "002" then Populate "10"
+If 8300_SCH/SCH05 = "010" or 8300_SCH/SCH05 = "118" then Populate "11"
+
+field nameVSART_BEZ
+************
+If DTM01 = "118" then Populate "Customer Pick - Up"
+If DTM01 ! = "118" then Populate "Motor Common Carrier"
+If 8300_SCH/SCH05 = "002" then Populate "Less than Truckload"
+If 8300_SCH/SCH05 = "010" or 8300_SCH/SCH05 = "118" then Populate "Customer Pick - Up"
+
+field nameRECIPNT_NO
+field nameKZAZU
+field nameAUTLF
+field nameAUGRU
+field nameAUGRU_BEZ
+field nameABRVW
+field nameABRVW_BEZ
+field nameFKTYP
+field nameLIFSK
+field nameLIFSK_BEZ
+field nameEMPST
+field nameABTNR
+field nameDELCO
+field nameWKURS_M
+field nameTAG_EXT:2
+field nameMANDT:3
+field nameDOCNUM:3
+field nameSEGNUM:2
+************
+COUNTER = COUNTER + 1 then Hardcode COUNTER
+field namePSGNUM:2
+field nameHLEVEL:2
+field nameQUALF
+field nameORGID
+field nameTAG_EXT:61
+field nameMANDT:62
+field nameDOCNUM:62
+************
+then concatenate 13 chars of tmpDocnum to docnumMap 000
+field nameSEGNUM:61
+************
+COUNTER = COUNTER + 1 then Hardcode COUNTER
+field namePSGNUM:61
+field nameHLEVEL:61
+field nameIDDAT:4
+************
+If E2EDK03:2/DATUM:7 exists then Hardcode "002"
+
+field nameDATUM:7
+************
+If DTM01 = "002" then Map DTM02
+If DTM01 = "010" or DTM01 = "118" then Map DTM02
+If 8300_SCH/SCH05 = "002" then Map 8300_SCH/SCH06
+If 8300_SCH/SCH05 = "010" or 8300_SCH/SCH05 = "118" then Map 8300_SCH/SCH06
+
+field nameUZEIT:7
+field nameTAG_EXT:4
+field nameMANDT:5
+field nameDOCNUM:5
+field nameSEGNUM:4
+************
+COUNTER = COUNTER + 1 then Hardcode COUNTER
+field namePSGNUM:4
+field nameHLEVEL:4
+field nameMWSKZ
+field nameMSATZ
+field nameMWSBT
+field nameTXJCD
+field nameKTEXT
+field nameTAG_EXT:5
+field nameMANDT:6
+field nameDOCNUM:6
+field nameSEGNUM:5
+************
+COUNTER = COUNTER + 1 then Hardcode COUNTER
+field namePSGNUM:5
+field nameHLEVEL:5
+field nameALCKZ
+field nameKSCHL
+field nameKOTXT
+field nameBETRG
+field nameKPERC
+field nameKRATE
+field nameUPRBS
+field nameMEAUN
+field nameKOBTR
+field nameMWSKZ:2
+field nameMSATZ:2
+field nameKOEIN
+************
+Hardcode "USX"
+
+field nameTAG_EXT:58
+field nameMANDT:59
+field nameDOCNUM:59
+************
+then concatenate 13 chars of tmpDocnum to docnumMap 000
+field nameSEGNUM:58
+************
+COUNTER = COUNTER + 1 then Hardcode COUNTER
+field namePSGNUM:58
+field nameHLEVEL:58
+field namePARVW:4
+************
+If E2EDKA1003:2/LIFNR:4 exists then Hardcode "WE"
+
+field namePARTN:4
+field nameLIFNR:4
+************
+If 4000_N1/N101 = "ST" then Map 4000_N1/N104
+
+field nameNAME1:4
+************
+If 4000_N1/N101 = "ST" then Map 4000_N1/N102
+
+field nameNAME2:4
+************
+If then Map 4000_N1/N201
+
+field nameNAME3:4
+field nameNAME4:4
+field nameSTRAS:4
+************
+If 4000_N1/N101 = "ST" then Map 4000_N1/N301
+
+field nameSTRS2:4
+field namePFACH:4
+field nameORT01:4
+************
+If 4000_N1/N101 = "ST" then Map 4000_N1/N401
+
+field nameCOUNC:4
+field namePSTLZ:4
+************
+If 4000_N1/N101 = "ST" then Map 4000_N1/N403
+
+field namePSTL2:4
+field nameLAND1:4
+************
+If 4000_N1/N101 = "ST" then Map 4000_N1/N404
+If $$$08 = "" then Populate "USA"
+
+field nameABLAD:5
+field namePERNR:5
+field namePARNR:4
+field nameTELF1:4
+field nameTELF2:4
+field nameTELBX:4
+field nameTELFX:4
+field nameTELTX:4
+field nameTELX1:4
+field nameSPRAS:4
+field nameANRED:4
+field nameORT02:4
+field nameHAUSN:4
+field nameSTOCK:4
+field nameREGIO:4
+************
+If 4000_N1/N101 = "ST" then Map 4000_N1/N402
+
+field namePARGE:4
+field nameISOAL:4
+field nameISONU:4
+field nameFCODE:4
+field nameIHREZ:5
+field nameBNAME:4
+field namePAORG:4
+field nameORGTX:4
+field namePAGRU:4
+field nameKNREF:3
+field nameILNNR:3
+field namePFORT:3
+field nameSPRAS_ISO:3
+field nameTITLE:3
+field nameTAG_EXT:59
+field nameMANDT:60
+field nameDOCNUM:60
+field nameSEGNUM:59
+************
+COUNTER = COUNTER + 1 then Hardcode COUNTER
+field namePSGNUM:59
+field nameHLEVEL:59
+field nameQUALP:3
+field nameSTDPN:3
+field nameTAG_EXT:68
+field nameMANDT:69
+field nameDOCNUM:69
+************
+then concatenate 13 chars of tmpDocnum to docnumMap 000
+field nameSEGNUM:68
+************
+COUNTER = COUNTER + 1 then Hardcode COUNTER
+field namePSGNUM:68
+field nameHLEVEL:68
+field namePARVW:7
+************
+If E2EDKA1003:5/LIFNR:7 exists then Hardcode "AG"
+
+field namePARTN:7
+field nameLIFNR:7
+************
+If 4000_N1/N101 = "ST" then Map 4000_N1/N104
+
+field nameNAME1:7
+field nameNAME2:7
+field nameNAME3:7
+field nameNAME4:7
+field nameSTRAS:7
+field nameSTRS2:7
+field namePFACH:7
+field nameORT01:7
+field nameCOUNC:7
+field namePSTLZ:7
+field namePSTL2:7
+field nameLAND1:7
+field nameABLAD:8
+field namePERNR:8
+field namePARNR:7
+field nameTELF1:7
+field nameTELF2:7
+field nameTELBX:7
+field nameTELFX:7
+field nameTELTX:7
+field nameTELX1:7
+field nameSPRAS:7
+field nameANRED:7
+field nameORT02:7
+field nameHAUSN:7
+field nameSTOCK:7
+field nameREGIO:7
+field namePARGE:7
+field nameISOAL:7
+field nameISONU:7
+field nameFCODE:7
+field nameIHREZ:8
+field nameBNAME:7
+field namePAORG:7
+field nameORGTX:7
+field namePAGRU:7
+field nameKNREF:6
+field nameILNNR:6
+field namePFORT:6
+field nameSPRAS_ISO:6
+field nameTITLE:6
+field nameTAG_EXT:69
+field nameMANDT:70
+field nameDOCNUM:70
+field nameSEGNUM:69
+************
+COUNTER = COUNTER + 1 then Hardcode COUNTER
+field namePSGNUM:69
+field nameHLEVEL:69
+field nameQUALP:6
+field nameSTDPN:6
+field nameTAG_EXT:66
+field nameMANDT:67
+field nameDOCNUM:67
+************
+then concatenate 13 chars of tmpDocnum to docnumMap 000
+field nameSEGNUM:66
+************
+COUNTER = COUNTER + 1 then Hardcode COUNTER
+field namePSGNUM:66
+field nameHLEVEL:66
+field namePARVW:6
+************
+Hardcode "LF"
+
+field namePARTN:6
+************
+If 4000_N1/N101 = "ST" and $$$02 = remove leading then trailing characters from ISA06
+
+field nameLIFNR:6
+field nameNAME1:6
+field nameNAME2:6
+field nameNAME3:6
+field nameNAME4:6
+field nameSTRAS:6
+field nameSTRS2:6
+field namePFACH:6
+field nameORT01:6
+field nameCOUNC:6
+field namePSTLZ:6
+field namePSTL2:6
+field nameLAND1:6
+field nameABLAD:7
+field namePERNR:7
+field namePARNR:6
+field nameTELF1:6
+field nameTELF2:6
+field nameTELBX:6
+field nameTELFX:6
+field nameTELTX:6
+field nameTELX1:6
+field nameSPRAS:6
+field nameANRED:6
+field nameORT02:6
+field nameHAUSN:6
+field nameSTOCK:6
+field nameREGIO:6
+field namePARGE:6
+field nameISOAL:6
+field nameISONU:6
+field nameFCODE:6
+field nameIHREZ:7
+field nameBNAME:6
+field namePAORG:6
+field nameORGTX:6
+field namePAGRU:6
+field nameKNREF:5
+field nameILNNR:5
+field namePFORT:5
+field nameSPRAS_ISO:5
+field nameTITLE:5
+field nameTAG_EXT:8
+field nameMANDT:9
+field nameDOCNUM:9
+************
+then concatenate 13 chars of tmpDocnum to docnumMap 000
+field nameSEGNUM:8
+************
+COUNTER = COUNTER + 1 then Hardcode COUNTER
+field namePSGNUM:8
+field nameHLEVEL:8
+field nameQUALF:2
+************
+If E2EDK02/BELNR:2 exists then Hardcode "001"
+
+field nameBELNR:2
+************
+Map BEG03
+
+field namePOSNR
+field nameDATUM:2
+************
+Map BEG05
+
+field nameUZEIT:2
+field nameTAG_EXT:9
+field nameMANDT:10
+field nameDOCNUM:10
+field nameSEGNUM:9
+************
+COUNTER = COUNTER + 1 then Hardcode COUNTER
+field namePSGNUM:9
+field nameHLEVEL:9
+field nameQUALF:3
+field nameLKOND
+field nameLKTEXT
+field nameTAG_EXT:10
+field nameMANDT:11
+field nameDOCNUM:11
+field nameSEGNUM:10
+************
+COUNTER = COUNTER + 1 then Hardcode COUNTER
+field namePSGNUM:10
+field nameHLEVEL:10
+field nameQUALF:4
+field nameTAGE
+field namePRZNT
+field nameZTERM_TXT
+field nameTAG_EXT:11
+field nameMANDT:12
+field nameDOCNUM:12
+************
+then concatenate 13 chars of tmpDocnum to docnumMap 000
+field nameSEGNUM:11
+************
+COUNTER = COUNTER + 1 then Hardcode COUNTER
+field namePSGNUM:11
+field nameHLEVEL:11
+field nameQUALZ
+************
+If DTM01 = "118" then Populate "003"
+If DTM01 ! = "118" then Populate "003"
+If 8300_SCH/SCH05 = "010" or 8300_SCH/SCH05 = "118" then Populate "003"
+
+field nameCUSADD
+************
+If DTM01 = "118" then Populate "CPU"
+If DTM01 ! = "118" then Populate "PPA"
+If 8300_SCH/SCH05 = "010" or 8300_SCH/SCH05 = "118" then Populate "CPU"
+
+field nameCUSADD_BEZ
+field nameTAG_EXT:12
+field nameMANDT:13
+field nameDOCNUM:13
+field nameSEGNUM:12
+************
+COUNTER = COUNTER + 1 then Hardcode COUNTER
+field namePSGNUM:12
+field nameHLEVEL:12
+field nameCCINS
+field nameCCINS_BEZEI
+field nameCCNUM
+field nameEXDATBI
+field nameCCNAME
+field nameFAKWR
+field nameTAG_EXT:13
+field nameMANDT:14
+field nameDOCNUM:14
+************
+then concatenate 13 chars of tmpDocnum to docnumMap 000
+field nameSEGNUM:13
+************
+COUNTER = COUNTER + 1 then Hardcode COUNTER
+field namePSGNUM:13
+field nameHLEVEL:13
+field nameTDID
+************
+If PER01 = "RQ" and if and PER02 = "" then Populate "ZEYD"
+If PER03 = "TE" and if and PER04 = "" then Populate "ZEYD"
+If PER05 = "FX" and if and PER06 = "" then Populate "ZEYD"
+If PER07 = "EM" and if and PER08 = "" then Populate "ZEYD"
+
+field nameTSSPRAS
+field nameTSSPRAS_ISO
+field nameTDOBJECT
+field nameTDOBNAME
+field nameTAG_EXT:60
+field nameMANDT:61
+field nameDOCNUM:61
+************
+then concatenate 13 chars of tmpDocnum to docnumMap 000
+field nameSEGNUM:60
+************
+COUNTER = COUNTER + 1 then Hardcode COUNTER
+field namePSGNUM:60
+field nameHLEVEL:60
+field nameTDLINE:5
+************
+If PER01 = "RQ" and if and PER02 = "" then Populate "Contact Name:"+ PER02
+If PER03 = "TE" and if and PER04 = "" then Populate "Contact Phone:"+ PER04
+If PER05 = "FX" and if and PER06 = "" then Populate "Contact Fax:"+ PER06
+If PER07 = "EM" and if and PER08 = "" then Populate "Contact Email:"+ PER08
+
+field nameTDFORMAT:4
+field nameTAG_EXT:15
+field nameMANDT:16
+field nameDOCNUM:16
+************
+then concatenate 13 chars of tmpDocnum to docnumMap 000
+field nameSEGNUM:15
+************
+COUNTER = COUNTER + 1 then Hardcode COUNTER
+field namePSGNUM:15
+field nameHLEVEL:15
+field namePOSEX
+************
+If then Map 8000_PO1/PO101
+
+field nameACTION:2
+field namePSTYP
+field nameKZABS:2
+field nameMENGE
+************
+Map 8000_PO1/PO102
+
+field nameMENEE
+************
+Map 8000_PO1/PO103
+ If LB = remove leading and trailing whitespaces from 8000_PO1/PO103 then Populate "LBR" If E2EDP01005/MENEE = "CA" then Populate "CS"
+field nameBMNG2
+field namePMENE
+field nameABFTZ
+field nameVPREI
+field namePEINH
+field nameNETWR
+field nameANETW
+field nameSKFBP
+field nameNTGEW:2
+field nameGEWEI:2
+field nameEINKZ
+field nameCURCY:2
+field namePREIS
+field nameMATKL
+field nameUEPOS
+field nameGRKOR
+field nameEVERS
+field nameBPUMN
+field nameBPUMZ
+field nameABGRU
+field nameABGRT
+field nameANTLF
+field nameFIXMG
+field nameKZAZU:2
+field nameBRGEW:2
+field namePSTYV
+field nameEMPST:2
+field nameABTNR:2
+field nameABRVW:2
+field nameWERKS
+field nameLPRIO
+field nameLPRIO_BEZ
+field nameROUTE
+field nameROUTE_BEZ
+field nameLGORT
+field nameVSTEL
+field nameDELCO:2
+field nameMATNR
+field nameVALTG
+field nameHIPOS
+field nameHIEVW
+field nameTAG_EXT:16
+field nameMANDT:17
+field nameDOCNUM:17
+field nameSEGNUM:16
+************
+COUNTER = COUNTER + 1 then Hardcode COUNTER
+field namePSGNUM:16
+field nameHLEVEL:16
+field nameQUALF:5
+field nameBELNR:3
+field nameZEILE
+field nameDATUM:3
+field nameUZEIT:3
+field nameBSARK
+field nameIHREZ:2
+field nameTAG_EXT:17
+field nameMANDT:18
+field nameDOCNUM:18
+field nameSEGNUM:17
+************
+COUNTER = COUNTER + 1 then Hardcode COUNTER
+field namePSGNUM:17
+field nameHLEVEL:17
+field namePOSEX:2
+field nameCONFIG_ID
+field nameINST_ID
+field nameTAG_EXT:18
+field nameMANDT:19
+field nameDOCNUM:19
+************
+then concatenate 13 chars of tmpDocnum to docnumMap 000
+field nameSEGNUM:18
+************
+COUNTER = COUNTER + 1 then Hardcode COUNTER
+field namePSGNUM:18
+field nameHLEVEL:18
+field nameADDIMATNR
+field nameADDINUMBER
+field nameADDIVKME
+field nameADDIFM
+field nameADDIFM_TXT
+field nameADDIKLART
+field nameADDIKLART_TXT
+field nameADDICLASS
+field nameADDICLASS_TXT
+field nameADDIIDOC
+field nameTAG_EXT:19
+field nameMANDT:20
+field nameDOCNUM:20
+************
+then concatenate 13 chars of tmpDocnum to docnumMap 000
+field nameSEGNUM:19
+************
+COUNTER = COUNTER + 1 then Hardcode COUNTER
+field namePSGNUM:19
+field nameHLEVEL:19
+field nameIDDAT:2
+field nameDATUM:4
+field nameUZEIT:4
+field nameTAG_EXT:20
+field nameMANDT:21
+field nameDOCNUM:21
+************
+then concatenate 13 chars of tmpDocnum to docnumMap 000
+field nameSEGNUM:20
+************
+COUNTER = COUNTER + 1 then Hardcode COUNTER
+field namePSGNUM:20
+field nameHLEVEL:20
+field nameMWSKZ:3
+field nameMSATZ:3
+field nameMWSBT:2
+field nameTXJCD:2
+field nameKTEXT:2
+field nameTAG_EXT:21
+field nameMANDT:22
+field nameDOCNUM:22
+************
+then concatenate 13 chars of tmpDocnum to docnumMap 000
+field nameSEGNUM:21
+************
+COUNTER = COUNTER + 1 then Hardcode COUNTER
+field namePSGNUM:21
+field nameHLEVEL:21
+field nameALCKZ:2
+************
+Map +
+
+field nameKSCHL:2
+************
+Map EDI1
+
+field nameKOTXT:2
+************
+Map grp_PO1/$$$06
+
+field nameBETRG:2
+************
+Map grp_PO1/$$$03
+
+field nameKPERC:2
+field nameKRATE:2
+************
+ntoa ( 8100_CTP/CTP07 / 8100_CTP/CTP04 , grp_PO1/$$$04 )
+
+field nameUPRBS:2
+************
+Populate "100"
+Populate "1"
+Map 1
+
+field nameMEAUN:2
+************
+Populate "LBR"
+Populate "LBR"
+If CTP:2/Composite_CTP:2_101 = "LB" then Populate "LBR"
+If CTP:2/Composite_CTP:2_101 = "CA" then Populate "CS"
+
+field nameKOBTR:2
+field nameMENGE:2
+field namePREIS:2
+field nameMWSKZ:4
+field nameMSATZ:4
+field nameKOEIN:2
+************
+Hardcode "USX"
+
+field nameCURTP
+field nameKOBAS
+field nameTAG_EXT:22
+field nameMANDT:23
+field nameDOCNUM:23
+************
+then concatenate 13 chars of tmpDocnum to docnumMap 000
+field nameSEGNUM:22
+************
+COUNTER = COUNTER + 1 then Hardcode COUNTER
+field namePSGNUM:22
+field nameHLEVEL:22
+field nameKSTBM
+field nameKBETR
+field nameTAG_EXT:23
+field nameMANDT:24
+field nameDOCNUM:24
+************
+then concatenate 13 chars of tmpDocnum to docnumMap 000
+field nameSEGNUM:23
+************
+COUNTER = COUNTER + 1 then Hardcode COUNTER
+field namePSGNUM:23
+field nameHLEVEL:23
+field nameWMENG
+field nameAMENG
+field nameEDATU
+field nameEZEIT
+field nameEDATU_OLD
+field nameEZEIT_OLD
+field nameTAG_EXT:24
+field nameMANDT:25
+field nameDOCNUM:25
+************
+then concatenate 13 chars of tmpDocnum to docnumMap 000
+field nameSEGNUM:24
+************
+COUNTER = COUNTER + 1 then Hardcode COUNTER
+field namePSGNUM:24
+field nameHLEVEL:24
+field namePARVW:2
+field namePARTN:2
+field nameLIFNR:2
+field nameNAME1:2
+field nameNAME2:2
+field nameNAME3:2
+field nameNAME4:2
+field nameSTRAS:2
+field nameSTRS2:2
+field namePFACH:2
+field nameORT01:2
+field nameCOUNC:2
+field namePSTLZ:2
+field namePSTL2:2
+field nameLAND1:2
+field nameABLAD:3
+field namePERNR:2
+field namePARNR:2
+field nameTELF1:2
+field nameTELF2:2
+field nameTELBX:2
+field nameTELFX:2
+field nameTELTX:2
+field nameTELX1:2
+field nameSPRAS:2
+field nameANRED:2
+field nameORT02:2
+field nameHAUSN:2
+field nameSTOCK:2
+field nameREGIO:2
+field namePARGE:2
+field nameISOAL:2
+field nameISONU:2
+field nameFCODE:2
+field nameIHREZ:3
+field nameBNAME:2
+field namePAORG:2
+field nameORGTX:2
+field namePAGRU:2
+field nameKNREF:2
+field nameILNNR:2
+field namePFORT:2
+field nameSPRAS_ISO:2
+field nameTITLE:2
+field nameTAG_EXT:25
+field nameMANDT:26
+field nameDOCNUM:26
+************
+then concatenate 13 chars of tmpDocnum to docnumMap 000
+field nameSEGNUM:25
+************
+COUNTER = COUNTER + 1 then Hardcode COUNTER
+field namePSGNUM:25
+field nameHLEVEL:25
+field nameQUALP:2
+field nameSTDPN:2
+field nameTAG_EXT:26
+field nameMANDT:27
+field nameDOCNUM:27
+************
+then concatenate 13 chars of tmpDocnum to docnumMap 000
+field nameSEGNUM:26
+************
+COUNTER = COUNTER + 1 then Hardcode COUNTER
+field namePSGNUM:26
+field nameHLEVEL:26
+field nameQUALF:6
+************
+Hardcode "001"
+
+field nameIDTNR
+************
+If 8000_PO1/PO106 = "PI" then Map 8000_PO1/PO107
+If 8000_PO1/PO108 = "PI" then Map 8000_PO1/PO109
+If 8000_PO1/PO110 = "PI" then Map 8000_PO1/PO111
+
+field nameKTEXT:3
+************
+Map 8150_PID/PID05
+
+field nameMFRPN
+field nameMFRNR
+field nameTAG_EXT:27
+field nameMANDT:28
+field nameDOCNUM:28
+************
+then concatenate 13 chars of tmpDocnum to docnumMap 000
+field nameSEGNUM:27
+************
+COUNTER = COUNTER + 1 then Hardcode COUNTER
+field namePSGNUM:27
+field nameHLEVEL:27
+field nameQUALF:7
+field nameICC
+field nameMOI
+field namePRI
+field nameTAG_EXT:28
+field nameMANDT:29
+field nameDOCNUM:29
+************
+then concatenate 13 chars of tmpDocnum to docnumMap 000
+field nameSEGNUM:28
+************
+COUNTER = COUNTER + 1 then Hardcode COUNTER
+field namePSGNUM:28
+field nameHLEVEL:28
+field nameFUNCTION
+field nameTDOBJECT:2
+field nameTDOBNAME:2
+field nameTDID:2
+field nameTDSPRAS
+field nameTDTEXTTYPE
+field nameLANGUA_ISO
+field nameTAG_EXT:29
+field nameMANDT:30
+field nameDOCNUM:30
+************
+then concatenate 13 chars of tmpDocnum to docnumMap 000
+field nameSEGNUM:29
+************
+COUNTER = COUNTER + 1 then Hardcode COUNTER
+field namePSGNUM:29
+field nameHLEVEL:29
+field nameTDFORMAT:2
+field nameTDLINE:2
+field nameTAG_EXT:30
+field nameMANDT:31
+field nameDOCNUM:31
+************
+then concatenate 13 chars of tmpDocnum to docnumMap 000
+field nameSEGNUM:30
+************
+COUNTER = COUNTER + 1 then Hardcode COUNTER
+field namePSGNUM:30
+field nameHLEVEL:30
+field nameQUALF:8
+field nameLKOND:2
+field nameLKTEXT:2
+field nameLPRIO:2
+field nameTAG_EXT:31
+field nameMANDT:32
+field nameDOCNUM:32
+field nameSEGNUM:31
+field namePSGNUM:31
+field nameHLEVEL:31
+field nameQUALF:9
+field nameTAGE:2
+field namePRZNT:2
+field nameZTERM_TXT:2
+field nameTAG_EXT:32
+field nameMANDT:33
+field nameDOCNUM:33
+field nameSEGNUM:32
+field namePSGNUM:32
+field nameHLEVEL:32
+field nameQUALZ:2
+field nameCUSADD:2
+field nameCUSADD_BEZ:2
+field nameTAG_EXT:33
+field nameMANDT:34
+field nameDOCNUM:34
+************
+then concatenate 13 chars of tmpDocnum to docnumMap 000
+field nameSEGNUM:33
+field namePSGNUM:33
+field nameHLEVEL:33
+field nameTDID:3
+************
+If 8000_PO1/REF01 = "K4" then Populate "0002"
+If 8000_PO1/REF01 = "BO" then Populate "0002"
+
+field nameTSSPRAS:2
+field nameTSSPRAS_ISO:2
+field nameTAG_EXT:34
+field nameMANDT:35
+field nameDOCNUM:35
+************
+then concatenate 13 chars of tmpDocnum to docnumMap 000
+field nameSEGNUM:34
+field namePSGNUM:34
+field nameHLEVEL:34
+field nameTDLINE:3
+************
+If 8000_PO1/REF01 = "K4" then Populate "Criticality Designator:"+ 8000_PO1/REF02
+If 8000_PO1/REF01 = "BO" then Populate "Bin Number:"+ 8000_PO1/REF02
+
+field nameTDFORMAT:3
+field nameTAG_EXT:35
+field nameMANDT:36
+field nameDOCNUM:36
+field nameSEGNUM:35
+field namePSGNUM:35
+field nameHLEVEL:35
+field nameSGTYP
+field nameZLTYP
+field nameLVALT
+field nameALTNO
+field nameALREF
+field nameZLART
+field namePOSEX:3
+field nameRANG
+field nameEXGRP
+field nameUEPOS:2
+field nameMATKL:2
+field nameMENGE:3
+field nameMENEE:2
+field nameBMNG2:2
+field namePMENE:2
+field nameBPUMN:2
+field nameBPUMZ:2
+field nameVPREI:2
+field namePEINH:2
+field nameNETWR:2
+field nameANETW:2
+field nameSKFBP:2
+field nameCURCY:3
+field namePREIS:3
+field nameACTION:3
+field nameKZABS:3
+field nameUEBTO
+field nameUEBTK
+field nameLBNUM
+field nameAUSGB
+field nameFRPOS
+field nameTOPOS
+field nameKTXT1
+field nameKTXT2
+field namePERNR:3
+field nameLGART
+field nameSTELL
+field nameZWERT
+field nameTAG_EXT:36
+field nameMANDT:37
+field nameDOCNUM:37
+field nameSEGNUM:36
+field namePSGNUM:36
+field nameHLEVEL:36
+field nameQUALF:10
+field nameBELNR:4
+field nameXLINE
+field nameDATUM:5
+field nameUZEIT:5
+field nameTAG_EXT:37
+field nameMANDT:38
+field nameDOCNUM:38
+field nameSEGNUM:37
+field namePSGNUM:37
+field nameHLEVEL:37
+field nameIDDAT:3
+field nameDATUM:6
+field nameUZEIT:6
+field nameTAG_EXT:38
+field nameMANDT:39
+field nameDOCNUM:39
+field nameSEGNUM:38
+field namePSGNUM:38
+field nameHLEVEL:38
+field nameMWSKZ:5
+field nameMSATZ:5
+field nameMWSBT:3
+field nameTXJCD:3
+field nameTAG_EXT:39
+field nameMANDT:40
+field nameDOCNUM:40
+field nameSEGNUM:39
+field namePSGNUM:39
+field nameHLEVEL:39
+field nameALCKZ:3
+field nameKSCHL:3
+field nameKOTXT:3
+field nameBETRG:3
+field nameKPERC:3
+field nameKRATE:3
+field nameUPRBS:3
+field nameMEAUN:3
+field nameKOBTR:3
+field nameMENGE:4
+field namePREIS:4
+field nameMWSKZ:6
+field nameMSATZ:6
+field nameTAG_EXT:40
+field nameMANDT:41
+field nameDOCNUM:41
+field nameSEGNUM:40
+field namePSGNUM:40
+field nameHLEVEL:40
+field nameFORMELNR
+field nameFRMVAL1
+field nameFRMVAL2
+field nameFRMVAL3
+field nameFRMVAL4
+field nameFRMVAL5
+field nameTAG_EXT:41
+field nameMANDT:42
+field nameDOCNUM:42
+field nameSEGNUM:41
+field namePSGNUM:41
+field nameHLEVEL:41
+field nameUSERF1_NUM
+field nameUSERF2_NUM
+field nameUSERF1_TXT
+field nameUSERF2_TXT
+field nameTAG_EXT:42
+field nameMANDT:43
+field nameDOCNUM:43
+field nameSEGNUM:42
+field namePSGNUM:42
+field nameHLEVEL:42
+field namePARVW:3
+field namePARTN:3
+field nameLIFNR:3
+field nameNAME1:3
+field nameNAME2:3
+field nameNAME3:3
+field nameNAME4:3
+field nameSTRAS:3
+field nameSTRS2:3
+field namePFACH:3
+field nameORT01:3
+field nameCOUNC:3
+field namePSTLZ:3
+field namePSTL2:3
+field nameLAND1:3
+field nameABLAD:4
+field namePERNR:4
+field namePARNR:3
+field nameTELF1:3
+field nameTELF2:3
+field nameTELBX:3
+field nameTELFX:3
+field nameTELTX:3
+field nameTELX1:3
+field nameSPRAS:3
+field nameANRED:3
+field nameORT02:3
+field nameHAUSN:3
+field nameSTOCK:3
+field nameREGIO:3
+field namePARGE:3
+field nameISOAL:3
+field nameISONU:3
+field nameFCODE:3
+field nameIHREZ:4
+field nameBNAME:3
+field namePAORG:3
+field nameORGTX:3
+field namePAGRU:3
+field nameTAG_EXT:43
+field nameMANDT:44
+field nameDOCNUM:44
+field nameSEGNUM:43
+field namePSGNUM:43
+field nameHLEVEL:43
+field nameQUALF:11
+field nameIDTNR:2
+field nameKTEXT:4
+field nameTAG_EXT:44
+field nameMANDT:45
+field nameDOCNUM:45
+field nameSEGNUM:44
+field namePSGNUM:44
+field nameHLEVEL:44
+field nameQUALF:12
+field nameLKOND:3
+field nameLKTEXT:3
+field nameTAG_EXT:45
+field nameMANDT:46
+field nameDOCNUM:46
+field nameSEGNUM:45
+field namePSGNUM:45
+field nameHLEVEL:45
+field nameQUALF:13
+field nameTAGE:3
+field namePRZNT:3
+field nameTAG_EXT:46
+field nameMANDT:47
+field nameDOCNUM:47
+field nameSEGNUM:46
+field namePSGNUM:46
+field nameHLEVEL:46
+field nameTDID:4
+field nameTSSPRAS:3
+field nameTAG_EXT:47
+field nameMANDT:48
+field nameDOCNUM:48
+field nameSEGNUM:47
+field namePSGNUM:47
+field nameHLEVEL:47
+field nameTDLINE:4
+field nameTAG_EXT:48
+field nameMANDT:49
+field nameDOCNUM:49
+field nameSEGNUM:48
+field namePSGNUM:48
+field nameHLEVEL:48
+field namePOSEX:4
+field nameCONFIG_ID:2
+field nameROOT_ID
+field nameSCE
+field nameKBNAME
+field nameKBVERSION
+field nameCOMPLETE
+field nameCONSISTENT
+field nameCFGINFO
+field nameTAG_EXT:49
+field nameMANDT:50
+field nameDOCNUM:50
+field nameSEGNUM:49
+field namePSGNUM:49
+field nameHLEVEL:49
+field nameINST_ID:2
+field nameOBJ_TYPE
+field nameCLASS_TYPE
+field nameOBJ_KEY
+field nameOBJ_TXT
+field nameQUANTITY
+field nameAUTHOR
+field nameTAG_EXT:50
+field nameMANDT:51
+field nameDOCNUM:51
+field nameSEGNUM:50
+field namePSGNUM:50
+field nameHLEVEL:50
+field namePARENT_ID
+field nameINST_ID:3
+field namePART_OF_NO
+field nameOBJ_TYPE:2
+field nameCLASS_TYPE:2
+field nameOBJ_KEY:2
+field nameAUTHOR:2
+field nameTAG_EXT:51
+field nameMANDT:52
+field nameDOCNUM:52
+field nameSEGNUM:51
+field namePSGNUM:51
+field nameHLEVEL:51
+field nameINST_ID:4
+field nameCHARC
+field nameCHARC_TXT
+field nameVALUE
+field nameVALUE_TXT
+field nameAUTHOR:3
+field nameTAG_EXT:52
+field nameMANDT:53
+field nameDOCNUM:53
+field nameSEGNUM:52
+field namePSGNUM:52
+field nameHLEVEL:52
+field nameCONTENT
+field nameTAG_EXT:53
+field nameMANDT:54
+field nameDOCNUM:54
+field nameSEGNUM:53
+field namePSGNUM:53
+field nameHLEVEL:53
+field nameEXIDV
+field nameTARAG
+field nameGWEIT
+field nameBRGEW:3
+field nameNTGEW:3
+field nameMAGEW
+field nameGWEIM
+field nameBTVOL
+field nameNTVOL
+field nameMAVOL
+field nameVOLEM
+field nameTAVOL
+field nameVOLET
+field nameVEGR2
+field nameVEGR1
+field nameVEGR3
+field nameVHILM
+field nameVEGR4
+field nameLAENG
+field nameVEGR5
+field nameBREIT
+field nameHOEHE
+field nameMEABM
+field nameINHALT
+field nameVHART
+field nameMAGRV
+field nameLADLG
+field nameLADEH
+field nameFARZT
+field nameFAREH
+field nameENTFE
+field nameEHENT
+field nameVELTP
+field nameEXIDV2
+field nameLANDT
+field nameLANDF
+field nameNAMEF
+field nameNAMBE
+field nameVHILM_KU
+field nameVEBEZ
+field nameSMGKN
+field nameKDMAT35
+field nameSORTL
+field nameERNAM
+field nameGEWFX
+field nameERLKZ
+field nameEXIDA
+field nameMOVE_STATUS
+field namePACKVORSCHR
+field namePACKVORSCHR_ST
+field nameLABELTYP
+field nameZUL_AUFL
+field nameTAG_EXT:54
+field nameMANDT:55
+field nameDOCNUM:55
+field nameSEGNUM:54
+field namePSGNUM:54
+field nameHLEVEL:54
+field nameQUALF:14
+field namePARAM
+field nameTAG_EXT:55
+field nameMANDT:56
+field nameDOCNUM:56
+field nameSEGNUM:55
+field namePSGNUM:55
+field nameHLEVEL:55
+field nameVEGR1_BEZ
+field nameVEGR2_BEZ
+field nameVEGR3_BEZ
+field nameVEGR4_BEZ
+field nameVEGR5_BEZ
+field nameVHART_BEZ
+field nameMAGRV_BEZ
+field nameVEBEZ:2
+field nameTAG_EXT:56
+field nameMANDT:57
+field nameDOCNUM:57
+field nameSEGNUM:56
+field namePSGNUM:56
+field nameHLEVEL:56
+field nameVELIN
+field nameVBELN
+field namePOSNR:2
+field nameEXIDV:2
+field nameVEMNG
+field nameVEMEH
+field nameMATNR:2
+field nameKDMAT
+field nameCHARG
+field nameWERKS:2
+field nameLGORT:2
+field nameCUOBJ
+field nameBESTQ
+field nameSOBKZ
+field nameSONUM
+field nameANZSN
+field nameWDATU
+field namePARID
+field nameTAG_EXT:57
+field nameMANDT:58
+field nameDOCNUM:58
+field nameSEGNUM:57
+field namePSGNUM:57
+field nameHLEVEL:57
+field nameSUMID
+field nameSUMME
+field nameSUNIT
+field nameWAERQ
